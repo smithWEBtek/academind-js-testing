@@ -7,6 +7,7 @@
   "scripts": {
     "test": "vitest --run --reporter verbose",
     "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
     "start": "http-server -c-1"
   },
   "keywords": [],
@@ -16,6 +17,7 @@
     "express": "^4.17.3"
   },
   "devDependencies": {
+    "c8": "^8.0.1",
     "vitest": "^0.9.0"
   }
 }
