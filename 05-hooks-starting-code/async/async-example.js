@@ -17,9 +17,3 @@ export function generateTokenPromise(userEmail) {
 
   return promise;
 }
-
-// generateToken('test@test.com', (err, token) => {
-//   console.log(token);
-// });
-
-// generateTokenPromise('test@test.com').then((token) => console.log(token));
