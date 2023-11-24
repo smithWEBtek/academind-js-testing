@@ -15,16 +15,19 @@ vi.mock('path', () => {
 })
 
 describe('writeData', () => {
-
     it('should execute the writeFile method', () => {
         const testData = "Test data"
-        
         const testFileName = 'test.txt'
-
         // return expect(writeData(testData, testFileName)).resolves.toBeUndefined();
         
         writeData(testData, testFileName)
         // expect(fs.writeFile).toHaveBeenCalled();
         expect(fs.writeFile).toHaveBeenCalledWith(testFileName,testData)
+    })
+
+    it('should return a promise that resolves to no value if called correctly', () => {
+        const testData = "Test data"
+        const testFileName = 'test.txt'
+        return expect(writeData(testData, testFileName)).resolves.toBeUndefined();
     })
 })

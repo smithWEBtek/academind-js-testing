@@ -5,6 +5,10 @@ import { generateReportData } from "./data";
 describe("generateReportDat()", () => {
   it("should execute logFn if provided", () => {
     const logger = vi.fn()
+
+    // logger.mockImplementationOnce(() => {
+    //   // customize https://pro.academind.com/courses/1763899/lectures/39726450
+    // })
     generateReportData(logger)
     expect(logger).toBeCalled()
     expect(logger).toHaveBeenCalled()
