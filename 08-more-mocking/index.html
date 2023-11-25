@@ -4,20 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="app.css">
     <title>More on Mocks</title>
     <script src="app.js" type="module" defer></script>
   </head>
   <body>
     <form>
-      <div>
+      <div class="form-title">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" />
       </div>
-      <div>
+      <div class="form-content">
         <label for="content">Content</label>
         <textarea id="content" name="content" rows="5"></textarea>
       </div>
-      <button>Save Post</button>
+      <button class='save-button'>Save Post</button>
       <div id="errors"></div>
     </form>
   </body>
