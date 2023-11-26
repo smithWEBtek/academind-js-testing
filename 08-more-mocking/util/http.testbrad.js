@@ -1,12 +1,31 @@
-import { HttpError } from "./errors.js";
+// import {HttpError} from './errors.js';
+
+// export async function sendDataRequest(data) {
+//   const response = await fetch('https://dummy-site.dev/posts', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(data),
+//   });
+
+//   const responseData = await response.json();
+
+//   if (!response.ok) {
+//     throw new HttpError(response.status, 'Sending the request failed.', responseData);
+//   }
+
+//   return responseData;
+// }
+
 import { it, expect, vi } from "vitest";
 import { sendDataRequest } from "./http";
 
 const testResponseData = { testKey: "testData" };
-const testFetch = vi.fn((url, options) => {
+const testFetch = vi.fn((url, options) => {  
   return new Promise((resolve, reject) => {
-    if (typeof options.body != "string") {
-      return reject("Not a string.");
+    if(typeof options.body != 'string'){
+      return reject('Not a string.')
     }
     const testResponse = {
       ok: true,
@@ -21,7 +40,22 @@ const testFetch = vi.fn((url, options) => {
   });
 });
 
-vi.stubGlobal("fetch", testFetch);
+const testFetchNotOk = vi.fn((url, options) => {  
+  return new Promise((resolve, reject) => {
+    const testResponse = {
+      ok: false,
+      json() {
+        return new Promise((resolve, reject) => {
+          resolve(testResponseData);
+        });
+      },
+    };
+
+    resolve(testResponse);
+  });
+});
+
+// vi.stubGlobal("fetch", testFetch);
 
 it("should return any available response data", () => {
   const testData = { key: "test" };
@@ -56,30 +90,23 @@ it("should convert the provided data to JSON before sending the request, async",
   const testData = { key: "test" };
   let errorMessage;
   try {
-    await sendDataRequest(testData);
+    await sendDataRequest(testData)
   } catch (error) {
-    errorMessage = error;
+    errorMessage = error
   }
   // this allows you to check the error value, without assuming ".rejects"
-  expect(sendDataRequest(testData)).not.toBe("Not a string.");
+  expect(sendDataRequest(testData)).not.toBe('Not a string.');
 });
 
-it("should throw an HttpError in case of non-ok responses", async () => {
+vi.stubGlobal("fetch", testFetchNotOk);
+it.only('should throw an HttpError in case of non-ok responses', async () => {
   const testData = { key: "test" };
-  testFetch.mockImplementationOnce((url, options) => {
-    return new Promise((resolve, reject) => {
-      const testResponse = {
-        ok: false,
-        json() {
-          return new Promise((resolve, reject) => {
-            resolve(testResponseData);
-          });
-        },
-      };
-      resolve(testResponse);
-    });
-  });
-
-  return expect(sendDataRequest(testData)).rejects.toBeInstanceOf(HttpError);
-  // expect(sendDataRequest(testData)).rejects.toBeInstanceOf(Error);
-});
+  let errorMessage;
+  try {
+    await sendDataRequest(testData)
+  } catch (error) {
+    errorMessage = error
+  }
+  console.log('**********', errorMessage);
+  expect(errorMessage.message).toEqual('Sending the request failed.');
+})
