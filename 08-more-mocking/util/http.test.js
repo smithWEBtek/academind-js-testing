@@ -64,6 +64,7 @@ it("should convert the provided data to JSON before sending the request, async",
   expect(sendDataRequest(testData)).not.toBe("Not a string.");
 });
 
+// tweaking testFetch to check for non-ok response
 it("should throw an HttpError in case of non-ok responses", async () => {
   const testData = { key: "test" };
   testFetch.mockImplementationOnce((url, options) => {
